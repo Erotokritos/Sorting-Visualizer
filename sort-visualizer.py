@@ -58,7 +58,7 @@ def draw(draw_info, algo_name, ascending):
     )
 
     sorting = draw_info.FONT.render(
-        "I - Insertion Sort | B - Bubble Sort",
+        "I - Insertion Sort | B - Bubble Sort | S - Selection Sort",
         1,
         draw_info.BLACK,
     )
@@ -137,6 +137,29 @@ def insertion_sort(draw_info, ascending=True):
     return lst
 
 
+def selection_sort(draw_info, ascending=True):
+    lst = draw_info.lst
+    if ascending:
+        for ind in range(len(lst)):
+            min_ind = ind
+            for j in range(ind + 1, len(lst)):
+                if lst[j] < lst[min_ind]:
+                    min_ind = j
+            lst[ind], lst[min_ind] = lst[min_ind], lst[ind]
+            draw_list(draw_info, {ind: draw_info.GREEN, min_ind: draw_info.RED}, True)
+            yield True
+    else:
+        for ind in range(len(lst)):
+            min_ind = ind
+            for j in range(ind + 1, len(lst)):
+                if lst[j] > lst[min_ind]:
+                    min_ind = j
+            lst[ind], lst[min_ind] = lst[min_ind], lst[ind]
+            draw_list(draw_info, {ind: draw_info.GREEN, min_ind: draw_info.RED}, True)
+            yield True
+    return lst
+
+
 def main():
     run = True
     clock = pygame.time.Clock()
@@ -185,6 +208,9 @@ def main():
             elif event.key == pygame.K_b and not sorting:
                 sorting_algorithm = bubble_sort
                 sorting_algo_name = "Bubble Sort"
+            elif event.key == pygame.K_s and not sorting:
+                sorting_algorithm = selection_sort
+                sorting_algo_name = "Selection Sort"
             elif event.key == pygame.K_q:
                 pygame.quit()
 
